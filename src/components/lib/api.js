@@ -1,6 +1,7 @@
 const BASEURL = 'http://vps-1575977-x.dattaweb.com:8080/atscom';
 
 export const apiGetData = (q, fields) => {
+
     let params = (fields === '') ? 
     'street,housenumber,postalcode,city,lat,lng,distance,type'
     :
@@ -15,6 +16,7 @@ export const apiGetData = (q, fields) => {
     }
     return fetch(url, request)    
 };
+
 
 
 export const apiPostData = (type, userData) => {

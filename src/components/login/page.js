@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 
 
@@ -55,12 +56,9 @@ export default function Page(props) {
     onLogin,
     } = props;
 
-    // Guarda un elemento con un mensaje de error de logeo
-    const msgError = <Box color="#D50000" bgcolor="#ef9a9a">{message}</Box>;
-
 
   return (
-    <Container component="main" >
+    <Container component="main" maxWidth='sm'>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -95,16 +93,22 @@ export default function Page(props) {
             onChange={setPassword}
           />
 
-          <Typography component="div" variant="body1">
-            {message !==''? 
-            msgError
-            :
-            ''
-          }
+          {message !==''?
+          <Typography
+          component="h2" 
+            >
+            <SnackbarContent
+            style={{
+              backgroundColor: '#D50000',
+            }} 
+              message={
+                message
+            }/>
           </Typography>
+          :
+          ''
+          }
 
-
-          
           <Button
             type="submit"
             fullWidth

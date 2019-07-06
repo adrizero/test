@@ -11,21 +11,18 @@ import Grid from '@material-ui/core/Grid';
 import Container  from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-
+import NavigationIcon from '@material-ui/icons/Navigation';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 
 import {fade, makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
+
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Chip from '@material-ui/core/Chip';
-import Divider from '@material-ui/core/Divider';
+
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import Icon from '@material-ui/core/Icon';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -56,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '100%',
+    flexBasis: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: 'auto',
@@ -82,42 +79,46 @@ const useStyles = makeStyles(theme => ({
       width: 200,
     },
   },
+  columAdvanceSearch:{
+    flexBasis: '66.66%',
+  },
   
 }));
 
 export default (props)=> {
   const classes = useStyles();
     const [searchOk, setSearckOk] = React.useState(false);
-    
   
     const expandSearch = () =>{
       setSearckOk(!searchOk);
       props.clearChecked();
     }
   return (
-    <div className={classes.root}>
+    <Container
+    maxWidth='sm' 
+    className={classes.root}>
       <ExpansionPanel 
       defaultExpanded={false}
       expanded={searchOk}        
       >
-
         <ExpansionPanelSummary
-          expandIcon={ 
-            <Fab 
-                color="default" 
-                aria-label="Add" 
-                className={classes.fab}
-                >
-                <AddIcon
-                onClick = {expandSearch} />
-            </Fab>
+          expandIcon={
+              <Fab 
+              size="small"
+              color="default" 
+              aria-label="Add" 
+              className={classes.fab}>
+                <NavigationIcon 
+                onClick = {expandSearch}
+                />
+            </Fab>     
           }
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-        <Box
+        <Box 
             border={1}
-            borderColor="grey.700"
+            borderColor="grey.500"
             borderRadius={16}
             className={classes.search}>
             <div className={classes.searchIcon}>
@@ -137,7 +138,7 @@ export default (props)=> {
             }
               inputProps={{ 'aria-label': 'Search' }}
             />
-          </Box>   
+          </Box> 
         </ExpansionPanelSummary>
         
         <ExpansionPanelDetails className={classes.details}>
@@ -268,7 +269,28 @@ export default (props)=> {
         fullWidth
         onClick={props.getResults}>
             Search
-         </Button>
-    </div>
+        </Button>
+
+        {(props.results.length < 1 &&
+        props.errorMessage != '') ?
+        (
+        <Typography
+        color = 'primary'
+        component="h2" 
+        variant="h5">
+          <SnackbarContent
+           style={{
+            backgroundColor: '#ff5722',
+            fontSize: '0.7em'
+          }} 
+            message={
+             props.errorMessage 
+          }/>             
+        </Typography>
+        )
+        :
+        ''
+        }
+    </Container>
   );
 }

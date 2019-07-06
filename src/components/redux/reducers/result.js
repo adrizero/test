@@ -5,9 +5,11 @@ import { apiGetData } from '../../lib/api';
 import { 
     ADD_SEARCHPARAMS,
     ADD_RESULTS,
+    ORDER_RESULTS,
 } from '../actions/actionResults';
 
 import {
+    setErrorMessage,
     SET_STREET,
     SET_HOUSENUMBER,
     SET_POSTALCODE,
@@ -18,14 +20,21 @@ import {
     SET_TYPE,
     SET_SEARCH,
     CLEAR_CHECKED,
+    ERROR_MESSAGE,
+    SELECTED_ORDER,
 } from '../actions/actionSearchBar'
 
+import {
+    addResults,
+} from '../actions/actionResults';
 
 //inicializamos el estado por default del componente que contendra los resultados
 const initialState = {
-    results: [],  
+    results: [],
+    errorMessage: '',  
     paramsSearch: '',
     search: '',
+    selectedOrder: 'city',
     userSearch: {
         street: false,
         houseNumber: false,
@@ -41,19 +50,22 @@ const initialState = {
 
 
 export const fetchGetResult = (q, fields)=> {
-    console.log('fetchGetResult');
     return(dispatch) =>{
         apiGetData(q,fields)
         .then(response =>{
             if(response.ok){
                 return response.json();
             }else{
-                console.log(response);
+                dispatch(setErrorMessage('Connection error'))
             }
         })
         .then(responseJson => {
-            console.log(responseJson);
-            //dispatch(getResults(response))
+            if(responseJson.length === 0){
+                dispatch(setErrorMessage('No results fouds'))
+            }
+            dispatch(addResults(responseJson))
+            
+            
         })
         .catch(res=>{console.log(res)})
     }
@@ -71,14 +83,43 @@ const result = (state = initialState, action) => {
         case ADD_RESULTS:
             return {
                 ...state,
-                 results: action.payload};
-        
+                 results: action.payload
+                };
+
+        case ORDER_RESULTS:
+
+            switch(state.selectedOrder) {          
+                case 'city':
+                    return{
+                        ...state,
+                        results: state.results.sort((a, b) => (a.address.city < b.address.city ? -1 : 1))
+                    }
+                case 'postalcode':
+                        return{
+                            ...state,
+                            results: state.results.sort((a, b) => (a.address.postalcode < b.address.postalcode ? -1 : 1))
+                        }
+                case 'street':
+                        return{
+                            ...state,
+                            results: state.results.sort((a, b) => (a.address.street < b.address.street ? -1 : 1))
+                            }
+                default:
+                        return {
+                            ...state
+                        }
+            }
+              
         case SET_SEARCH:
-            console.log('estas en reducer')
             return {
                 ...state,
                 search: action.payload,
                 
+            }
+        case SELECTED_ORDER:
+            return {
+                ...state,
+                selectedOrder: action.payload
             }
 
         case SET_STREET:
@@ -166,7 +207,11 @@ const result = (state = initialState, action) => {
                         type:false,
                     } 
                 }
-        
+            case ERROR_MESSAGE:
+                return {
+                    ...state,
+                    errorMessage: action.payload,
+                }
         default:
             return {...state};
     }

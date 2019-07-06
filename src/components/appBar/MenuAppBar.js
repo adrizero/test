@@ -5,7 +5,8 @@ import { Redirect } from 'react-router-dom';
 import {setLogout} from '../redux/actions/actionLogin';
 
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles} from '@material-ui/core/styles';
+import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -14,6 +15,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 
 
 
@@ -26,6 +29,19 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+  },
+  avatar: {
+    margin: 10,
+  },
+  orangeAvatar: {
+    margin: 10,
+    color: '#fff',
+    backgroundColor: deepOrange[500],
+  },
+  purpleAvatar: {
+    margin: 10,
+    color: '#fff',
+    backgroundColor: deepPurple[500],
   },
 }));
 
@@ -54,11 +70,22 @@ function MenuAppBar({username, logged, setLogout}) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>  
-
-          <Typography variant="h6" className={classes.title}>
-             {logged ? 'Usuario: '+ username: 'Bienvenido'}
-          </Typography>
-
+          
+             {logged ?
+              (
+              <Grid container justify="center" alignItems="center">
+                <Avatar className={classes.avatar}>H</Avatar>
+                <Typography variant="h6" className={classes.title}>
+                  Hello {username}!
+                </Typography>
+              </Grid> 
+              )
+              :
+              (
+              <Typography variant="h6" className={classes.title}>
+                Bienvenido
+             </Typography>
+              )}
           { logged ?
           (
           <div>
@@ -86,9 +113,12 @@ function MenuAppBar({username, logged, setLogout}) {
                 open={open}
                 onClose={handleClose}
               >
+              <MenuItem>
+                Profile
+              </MenuItem>
               <MenuItem 
-                onClick={handleLogout}
-                >Logout</MenuItem>       
+                onClick={handleLogout}>
+                Logout</MenuItem>       
               </Menu>
             </div>
         

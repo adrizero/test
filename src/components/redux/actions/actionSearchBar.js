@@ -8,7 +8,22 @@ export const SET_DISTANCE = 'SET_DISTANCE';
 export const SET_TYPE = 'SET_TYPE';
 export const SET_SEARCH = 'SET_SEARCH'
 export const CLEAR_CHECKED = 'CLEAR_CHECKED';
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';
+export const SELECTED_ORDER = 'SELECTED_ORDER';
 
+export const setSelectedOrder = (order) =>{
+    return {
+        type: SELECTED_ORDER,
+        payload: order,
+    }
+}
+
+export const setErrorMessage = (msg) => {
+    return {
+        type: ERROR_MESSAGE,
+        payload: msg,
+    }
+}
 export const clearChecked = () => {
     return {
         type: CLEAR_CHECKED

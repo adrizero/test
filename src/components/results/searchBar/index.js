@@ -14,11 +14,12 @@ import {
     setLng,
     setDistance,
     setType,
+    setErrorMessage,
 } from './../../redux/actions/actionSearchBar';
 
 import {
     addSearchParams,
-
+    orderResults,
 } from './../../redux/actions/actionResults';
 
 import {fetchGetResult} from './../../redux/reducers/result';
@@ -27,44 +28,20 @@ import Page from './page';
 
 
 function SearchBar(props = {...mapStateToProps, ...mapDispatchToProps}){
-
     const handleSearch = (e)  =>{   
         props.setSearch(e.target.value)
     }
-
-    const handleStreet = () => {
-        props.setStreet()
-    }
-    const handleHouseNumber = () => {
-        props.setHouseNumber()
-    }
-    const handlePostalCode = () => {
-        props.setPostalCode()
-    }
-    const handleCity = () => {
-        props.setCity()
-    }
-    const handleLat = () => {
-        props.setLat()
-    }
-    const handleLng = () => {
-        props.setLng()
-    }
-    const handleDistance = e => {
-        props.setDistance()
-    }
-    const handleType = () => {
-        props.setType()
-    }
-
-    const getResults  =e => {
+    
+    const getResults = e => {
         e.preventDefault()
         props.addSearchParams()
+        if(props.search === ''){
+            props.setErrorMessage('You must fill the field');
+            return
+        }
         let q = props.search;
         let fields = props.paramsSearch;
-        console.log(q);
-        console.log(fields);
-        props.fetchGetResult(q, fields)
+        props.fetchGetResult(q, fields);
     }
 
 
@@ -80,18 +57,22 @@ function SearchBar(props = {...mapStateToProps, ...mapDispatchToProps}){
                 lng = {props.lng}
                 distance = {props.distance}
                 type= {props.type}
+                errorMessage = {props.errorMessage}
+                results ={props.results}
 
                 setSearch = {handleSearch}
-                setStreet = {handleStreet}
-                setHouseNumber = {handleHouseNumber}
-                setPostalCode = {handlePostalCode}
-                setCity = {handleCity}
-                setLat = {handleLat}
-                setLng = {handleLng}
-                setDistance = {handleDistance}
-                setType = {handleType}
+                setStreet = {props.setStreet}
+                setHouseNumber = {props.setHouseNumber}
+                setPostalCode = {props.setPostalCode}
+                setCity = {props.setCity}
+                setLat = {props.setLat}
+                setLng = {props.setLng}
+                setDistance = {props.setDistance}
+                setType = {props.setType}
                 getResults = {getResults}
                 clearChecked = {props.clearChecked}
+    
+                
             />
         </Fragment>
     )    
@@ -109,6 +90,8 @@ const mapStateToProps = state => {
         lng: state.result.userSearch.lng,
         distance: state.result.userSearch.distance,
         type: state.result.userSearch.type,
+        results: state.result.results,
+        errorMessage: state.result.errorMessage,
     }
 }
 
@@ -149,7 +132,13 @@ const mapDispatchToProps = (dispatch)=>{
         },
         clearChecked: ()=>{
             dispatch(clearChecked())
-        }
+        },
+        setErrorMessage: (msg)=>{
+            dispatch(setErrorMessage(msg))
+        },
+        orderResults: () =>{
+            dispatch(orderResults())
+        },
     }
 }
 

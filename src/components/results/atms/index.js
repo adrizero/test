@@ -1,18 +1,48 @@
-import React, { Component, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, {Fragment } from 'react';
+//import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import Page from './page';
 
+import {setSelectedOrder} from '../../redux/actions/actionSearchBar'
+import {
+    addResults,
+    orderResults,
+} from '../../redux/actions/actionResults'
 
+function Atms(props={...mapStateToProps, ...mapDispatchToProps}){
+    return(
+        <Fragment>
+            <Page 
+                results={props.results}
+                selectedOrder = {props.selectedOrder}
+                setSelectedOrder = {props.setSelectedOrder}
+                addResults = {props.addResults}
+                orderResults = {props.orderResults}
+            />
+        </Fragment>
+    )
+}
 
-function Atms(){
+const mapStateToProps = state => {
+    return {
+        results: state.result.results,
+        selectedOrder: state.result.selectedOrder,
+        setSelectedOrder: state.result.setSelectedOrder,
+    }
+}
 
+const mapDispatchToProps = dispatch =>{
+    return {
+        setSelectedOrder: (order) =>{
+            dispatch(setSelectedOrder(order))
+        },
+        addResults: data =>{
+            dispatch(addResults(data))
+        },
+        orderResults: () => {
+            dispatch(orderResults())
+        },
+    }
+}
 
-    return( 
-    <Fragment>
-        <Page/>
-    </Fragment>
-    )}
-
-export default (Atms)
+export default connect(mapStateToProps,mapDispatchToProps)(Atms)
