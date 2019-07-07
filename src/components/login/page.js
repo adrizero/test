@@ -1,4 +1,6 @@
 import React from 'react';
+
+// Libreria Material ui
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,7 +11,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 
@@ -47,15 +48,7 @@ const useStyles = makeStyles(theme => ({
 export default function Page(props) {
   const classes = useStyles();
 
-  const {
-    username, 
-    password, 
-    message,
-    setPassword,
-    setUsername,
-    onLogin,
-    } = props;
-
+ 
 
   return (
     <Container component="main" maxWidth='sm'>
@@ -77,8 +70,8 @@ export default function Page(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            value={username}
-            onChange = {setUsername}
+            value={props.username}
+            onChange = {props.setUsername}
           />
           <TextField
             margin="normal"
@@ -89,11 +82,11 @@ export default function Page(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={password}
-            onChange={setPassword}
+            value={props.password}
+            onChange={props.setPassword}
           />
 
-          {message !==''?
+          {props.message !==''?
           <Typography
           component="h2" 
             >
@@ -102,7 +95,7 @@ export default function Page(props) {
               backgroundColor: '#D50000',
             }} 
               message={
-                message
+                props.message
             }/>
           </Typography>
           :
@@ -115,7 +108,7 @@ export default function Page(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick = {onLogin}
+            onClick = {props.onLogin}
           >
             Login
           </Button>

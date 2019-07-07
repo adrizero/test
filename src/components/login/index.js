@@ -14,7 +14,6 @@ import {
     setPassword,
     setMessage,
 } from '../redux/actions/actionLogin';
-
 import {fetchGetAuthentication} from '../redux/reducers/logged'
 
 
@@ -61,21 +60,17 @@ class Login extends Component{
         };
        if(this.props.username !== '' && this.props.password !== ''){
             this.props.fetchGetAuthentication(userData);
-            
+                
         } else {
             this.setMessage('Debe llenar los campos');
         };
     }
 
 
-    render(){
-        
-        if(this.props.logged){
-            
-            return(
-                
-                <Fragment>
-                 
+    render(){        
+        if(this.props.logged){            
+            return(               
+                <Fragment>               
                     <Redirect 
                         from='/login' 
                         to='/results'/>
@@ -111,7 +106,6 @@ class Login extends Component{
         password: state.logged.password,
         logged: state.logged.logged,
         message: state.logged.message,
-        token: state.logged.token,
     }
 };
 

@@ -30,6 +30,7 @@ const stateInitial = {
 }
 
 export const fetchGetAuthentication = (userData)=> {
+    //Comprueba la autentificacion de usuario
     return(dispatch)=>{
     apiPostData('/login', userData)
     .then(response =>{
@@ -56,35 +57,41 @@ export const fetchGetAuthentication = (userData)=> {
 
 
 const logged = (state=  stateInitial, action) => {
+    //Devuelve un nuevo objeto con estado actualizado
     switch(action.type){
+
         case SETPWD:
+            //Actualiza la contraseña
             return {
                 ...state,
                 password: action.payload,
             }
         case SETUSER:
+            //Actualiza el usuario
             return {
                 ...state,
                 username: action.payload,
             }
-
         case LOGIN:
+            //Actualiza a estado logueado
             return {
                 ...state,
                 logged: action.payload,
             };
-
         case LOGOUT:
+            //Actualiza a estado deslogueado
             return {
                 ...state,
                 logged: action.payload,
             };
         case SETMSG:
+            //Actualiza un mensaje de error
             return {
                 ...state,
                 message: action.payload,
             }
         case GET_AUTHENTICATION:
+            //Guarda el token de seguridad en el local storage
              localStorage.setItem("token", action.payload);
             return {
                 ...state,

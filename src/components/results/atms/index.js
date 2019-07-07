@@ -3,13 +3,18 @@ import React, {Fragment } from 'react';
 import { connect } from 'react-redux';
 import Page from './page';
 
-import {setSelectedOrder} from '../../redux/actions/actionSearchBar'
+import {
+    setSelectedOrder} from '../../redux/actions/actionSearchBar'
 import {
     addResults,
     orderResults,
 } from '../../redux/actions/actionResults'
 
+
+
+
 function Atms(props={...mapStateToProps, ...mapDispatchToProps}){
+
     return(
         <Fragment>
             <Page 
@@ -28,6 +33,7 @@ const mapStateToProps = state => {
         results: state.result.results,
         selectedOrder: state.result.selectedOrder,
         setSelectedOrder: state.result.setSelectedOrder,
+        searchId: state.result.searchId,
     }
 }
 

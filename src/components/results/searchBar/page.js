@@ -1,37 +1,29 @@
-import React, { Component, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React from 'react';
 
+// Libreria de Material ui
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Container  from '@material-ui/core/Container';
 import { Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-
-
 import {fade, makeStyles } from '@material-ui/core/styles';
-
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 
 
+//Estilios
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
-
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
@@ -85,17 +77,21 @@ const useStyles = makeStyles(theme => ({
   
 }));
 
+
+
+//Componente presentacional
 export default (props)=> {
   const classes = useStyles();
     const [searchOk, setSearckOk] = React.useState(false);
   
     const expandSearch = () =>{
+      //Abre o cierra la busqueda avanzada
       setSearckOk(!searchOk);
       props.clearChecked();
     }
   return (
     <Container
-    maxWidth='sm' 
+    maxWidth='md' 
     className={classes.root}>
       <ExpansionPanel 
       defaultExpanded={false}
@@ -272,7 +268,7 @@ export default (props)=> {
         </Button>
 
         {(props.results.length < 1 &&
-        props.errorMessage != '') ?
+        props.errorMessage !== '') ?
         (
         <Typography
         color = 'primary'

@@ -2,24 +2,24 @@ import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import {setLogout} from '../redux/actions/actionLogin';
-
-
+// Lib Material ui
 import { makeStyles} from '@material-ui/core/styles';
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 
+// Accion para cerrar session
+import {setLogout} from '../redux/actions/actionLogin';
 
 
+// estilos
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -45,6 +45,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 function MenuAppBar({username, logged, setLogout}) {
   const classes = useStyles();
   let [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,11 +53,13 @@ function MenuAppBar({username, logged, setLogout}) {
   
 
   const handleLogout = () => {
+    //Cierra sesion y elimina el token de localSorage
     localStorage.setItem("token", null) 
     setLogout();
   }
 
   function handleMenu(event) {
+    //abre y cierra el menu para cerrar sesion
     setAnchorEl(event.currentTarget);
   }
 
@@ -66,7 +69,6 @@ function MenuAppBar({username, logged, setLogout}) {
 
   
   return (
-
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>  
@@ -144,6 +146,7 @@ function MenuAppBar({username, logged, setLogout}) {
 }
 
 const mapStateToProps = state =>{
+  //Mapeamos el estado general de la aplicacion
   return{
     username: state.logged.username,
     logged: state.logged.logged,
@@ -152,6 +155,7 @@ const mapStateToProps = state =>{
 
 
 const mapDispatchProps = dispatch =>{
+  // Mapeamos las funciones para despachar acciones
   return{
     setLogout: ()=>{
       dispatch(setLogout())

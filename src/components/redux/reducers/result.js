@@ -8,6 +8,7 @@ import {
     ORDER_RESULTS,
 } from '../actions/actionResults';
 
+//Constantes y acciones
 import {
     setErrorMessage,
     SET_STREET,
@@ -22,20 +23,23 @@ import {
     CLEAR_CHECKED,
     ERROR_MESSAGE,
     SELECTED_ORDER,
+
 } from '../actions/actionSearchBar'
 
 import {
+    SAVE_ID,
     addResults,
 } from '../actions/actionResults';
 
 //inicializamos el estado por default del componente que contendra los resultados
 const initialState = {
-    results: [],
-    errorMessage: '',  
-    paramsSearch: '',
-    search: '',
-    selectedOrder: 'city',
-    userSearch: {
+    results: [],            //Objetos traido de la api
+    searchId: '',           //Id del objeto el cual se mostrara el mapa
+    errorMessage: '',       //Mensaje de error
+    paramsSearch: '',       //Parametros de busquedas seleccionados
+    search: '',             //Palabra a buscar
+    selectedOrder: 'city',  //Columna a ordenar
+    userSearch: {           //Parametros seleccionados por el usuario
         street: false,
         houseNumber: false,
         postalCode: false,
@@ -50,6 +54,7 @@ const initialState = {
 
 
 export const fetchGetResult = (q, fields)=> {
+    //Verifica la obtencion de datos traido de la api
     return(dispatch) =>{
         apiGetData(q,fields)
         .then(response =>{
@@ -64,8 +69,6 @@ export const fetchGetResult = (q, fields)=> {
                 dispatch(setErrorMessage('No results fouds'))
             }
             dispatch(addResults(responseJson))
-            
-            
         })
         .catch(res=>{console.log(res)})
     }
@@ -73,7 +76,9 @@ export const fetchGetResult = (q, fields)=> {
 
 const result = (state = initialState, action) => {
     switch(action.type){
+        //Devuelve un nuevo objeto con estados actualizados
         case ADD_SEARCHPARAMS:
+            //Actualiza los parametros seleccionados por el usuario
             const keys = Object.keys(state.userSearch);        
             return {
                 ...state,
@@ -81,13 +86,21 @@ const result = (state = initialState, action) => {
             }
 
         case ADD_RESULTS:
+            //Actualiza el resultado (Objetos traido de la api)
             return {
                 ...state,
                  results: action.payload
                 };
-
+        
+        case SAVE_ID:
+            //Actualiza el id de objeto a mostrar en el mapa
+            return{
+                ...state,
+                searchId: action.payload
+            }
+        
         case ORDER_RESULTS:
-
+            //Actualiza el orden del resultado (objetos Atms)
             switch(state.selectedOrder) {          
                 case 'city':
                     return{
@@ -111,18 +124,21 @@ const result = (state = initialState, action) => {
             }
               
         case SET_SEARCH:
+            //Actualiza la palabra a buscar
             return {
                 ...state,
                 search: action.payload,
                 
             }
         case SELECTED_ORDER:
+            //Actualiza que columna se va a ordenar
             return {
                 ...state,
                 selectedOrder: action.payload
             }
 
         case SET_STREET:
+            //Actualiza el parametro de busqueda calle
             return {
                 ...state,
                 userSearch: {
@@ -132,6 +148,7 @@ const result = (state = initialState, action) => {
             }
 
             case SET_HOUSENUMBER:
+                //Actualiza el parametro de busqueda numero de casa
                 return{
                     ...state,
                     userSearch:{
@@ -141,6 +158,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_POSTALCODE:
+                //Actualiza el parametro de busqueda codigo postal
                 return {
                     ...state,
                     userSearch: {
@@ -150,6 +168,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_CITY:
+                //Actualiza el parametro de busqueda ciudad
                 return {
                     ...state,
                     userSearch:{
@@ -159,6 +178,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_LAT:
+                //Actualiza el parametro de busqueda latitud
                 return {
                     ...state,
                     userSearch: {
@@ -168,6 +188,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_LNG:
+                //Actualiza el parametro de busqueda longitud
                 return {
                     ...state,
                     userSearch: {
@@ -177,6 +198,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_DISTANCE:
+                //Actualiza el parametro de busqueda distancia
                 return {
                     ...state,
                     userSearch: {
@@ -186,6 +208,7 @@ const result = (state = initialState, action) => {
                 }
             
             case SET_TYPE:
+                //Actualiza el parametro de busqueda tipo
                 return {
                     ...state,
                     userSearch: {
@@ -194,6 +217,7 @@ const result = (state = initialState, action) => {
                     }
                 }
             case CLEAR_CHECKED:
+                //Actualiza el todos los parametros de busqueda
                 return {
                     ...state,
                     userSearch: {
@@ -208,6 +232,7 @@ const result = (state = initialState, action) => {
                     } 
                 }
             case ERROR_MESSAGE:
+                //Actualiza el mensaje de error
                 return {
                     ...state,
                     errorMessage: action.payload,

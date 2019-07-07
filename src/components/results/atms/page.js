@@ -1,3 +1,5 @@
+
+//Lib Material ui
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -6,7 +8,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
@@ -15,25 +16,24 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import clsx from 'clsx';
 import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button'
+import { saveId } from '../../redux/actions/actionResults';
+
 
 const useStyles1 = makeStyles(theme => ({
+  //Estilos para la paginacion de los datos
   root: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
@@ -42,7 +42,9 @@ const useStyles1 = makeStyles(theme => ({
   
 }));
 
+
 function TablePaginationActions(props) {
+  //Muestra la paginacion de los datos a mostrar
   const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
@@ -77,7 +79,7 @@ function TablePaginationActions(props) {
       </IconButton>
       <IconButton 
         onClick={handleBackButtonClick} 
-        disabled={page === 0} a
+        disabled={page === 0} 
         ria-label="Previous Page">
         {theme.direction === 'rtl' ? 
         <KeyboardArrowRight /> 
@@ -105,6 +107,7 @@ function TablePaginationActions(props) {
 
 
 const useStyles2 = makeStyles(theme => ({
+  //Estilo para el contenido de la tabla
   root: {
     width: '100%',
   },
@@ -136,38 +139,50 @@ const useStyles2 = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(3),
   },
+  button: {
+    margin: theme.spacing(1),
+  },
+  rightIcon: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
+
+//Elemento presentacional
 export default function Page(props) {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [selectedValue, setSelectedValue] = React.useState('city');
  
-  props.orderResults()
+
+  //Pasando los Objetos de la api a la tabla
   const rows = props.results
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+ 
 
 
 
   function handleChange(event) {
+    //Ordena la columna seleccionada en orden ascendente
     setSelectedValue(event.target.value);
-    props.setSelectedOrder(selectedValue)
+    props.setSelectedOrder(event.target.value);
     props.orderResults()
   }
 
   function handleChangePage(event, newPage) {
+    //muestra la siguiente pagina
     setPage(newPage);
   }
 
   function handleChangeRowsPerPage(event) {
+    //Carga la la pagina de la tabla
     setRowsPerPage(parseInt(event.target.value, 10));
   }
 
   return (
     <Container
-    maxWidth='sm'
+    maxWidth='md'
     className={classes.root}>
       <div 
       className={classes.tableWrapper}>
@@ -176,8 +191,7 @@ export default function Page(props) {
         className={classes.table}>
           
           <TableRow>
-            <ExpansionPanel
-            fullwhidt>
+            <ExpansionPanel>
               <ExpansionPanelSummary
                 expandIcon={
                   <Fab 
@@ -243,14 +257,16 @@ export default function Page(props) {
               </FormControl>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-            </TableRow>
-          
+            </TableRow>  
+
           { rows.length > 0?
           (
           <TableBody>
-             
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => (
-              <TableRow key={row.name}>
+
+            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,id) =>
+            (
+              
+              <TableRow key={id}>
                 <ExpansionPanel>
                   <ExpansionPanelSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -301,15 +317,19 @@ export default function Page(props) {
                       fullwhidt 
                       className={
                         clsx(classes.detail, classes.helper)}>
-                      <BottomNavigation 
-                        value='maps' 
-//                        onChange={handleChange} 
-                        className={{width: 500}}>    
-                        <BottomNavigationAction 
-                          label="See Map" 
-                          value="maps" 
-                          icon={<LocationOnIcon />} />
-                      </BottomNavigation>
+                        <Button 
+                        value={(page*rowsPerPage)+id}
+                        name={(page*rowsPerPage)+id}
+                        onClick = {saveId}
+                        variant="contained" 
+                        color="secondary" 
+                        className={classes.button}>
+                        See Map
+                        <LocationOnIcon className={classes.rightIcon} />
+                      </Button>
+                     
+                          
+                      
                     </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>

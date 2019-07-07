@@ -1,7 +1,7 @@
 const BASEURL = 'http://vps-1575977-x.dattaweb.com:8080/atscom';
 
 export const apiGetData = (q, fields) => {
-
+    //Obtien todos los elementos Atms mediante una busqueda pasada por parametros
     let params = (fields === '') ? 
     'street,housenumber,postalcode,city,lat,lng,distance,type'
     :
@@ -20,6 +20,7 @@ export const apiGetData = (q, fields) => {
 
 
 export const apiPostData = (type, userData) => {
+    //Autentificacion del login
     const url = BASEURL + type;
     const request = {
         method: 'POST',
@@ -31,36 +32,3 @@ export const apiPostData = (type, userData) => {
     return fetch(url, request)
     
 };
-
-export const apiUpdateData = (type, userData, id) => {
-
-    const url = BASEURL + type + id;
-
-    const request = {
-        method: 'PUT',
-        body: JSON.stringify(userData),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    };
-
-    return fetch(url, request)
-        .then(response => response.json())
-};
-
-export const apiDeleteData = (type, id) => {
-
-    const url = BASEURL + type + id;
-
-    const request = { method: 'DELETE' };
-
-    return fetch(url, request)
-        .then(response => response.json())
-};
-
-
-
-
-
-
-

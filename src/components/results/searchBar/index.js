@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, {  Fragment } from 'react';
 import { connect } from 'react-redux';
 
 //acciones
@@ -16,23 +15,26 @@ import {
     setType,
     setErrorMessage,
 } from './../../redux/actions/actionSearchBar';
-
 import {
     addSearchParams,
     orderResults,
 } from './../../redux/actions/actionResults';
 
+//Peticion de datos
 import {fetchGetResult} from './../../redux/reducers/result';
-
+//Elemento presentacional
 import Page from './page';
 
 
 function SearchBar(props = {...mapStateToProps, ...mapDispatchToProps}){
-    const handleSearch = (e)  =>{   
+    
+    const handleSearch = (e)  =>{
+        //Obtiene la palabra a buscar   
         props.setSearch(e.target.value)
     }
     
     const getResults = e => {
+        //Obtiene losdatos de la api y lo al estado
         e.preventDefault()
         props.addSearchParams()
         if(props.search === ''){
@@ -79,6 +81,7 @@ function SearchBar(props = {...mapStateToProps, ...mapDispatchToProps}){
 }
 
 const mapStateToProps = state => {
+    //Mapea los estados de la aplicacion
     return {
         paramsSearch: state.result.paramsSearch,
         search: state.result.search,
@@ -96,6 +99,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch)=>{
+    //Mapea las acciones a despachar
     return{
         setSearch: (data) =>{
             dispatch(setSearch(data))
